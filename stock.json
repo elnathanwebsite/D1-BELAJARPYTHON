@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "nama": "Produk A",
+        "kategori": "Elektronik",
+        "harga": 250000,
+        "stok": 10,
+        "gambar": "https://via.placeholder.com/100",
+        "link_pembayaran": "https://www.example.com/beli-produk-a"
+    },
+    {
+        "id": 2,
+        "nama": "Produk B",
+        "kategori": "Pakaian",
+        "harga": 100000,
+        "stok": 20,
+        "gambar": "https://via.placeholder.com/100",
+        "link_pembayaran": "https://www.example.com/beli-produk-b"
+    }
+]

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Stok Produk yang di buat dengan html css js react json dan python</title>
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto my-10 px-4">
+        <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">Daftar Stok Produk</h1>
+
+        <!-- React akan me-render di dalam div ini -->
+        <div id="root"></div>
+    </div>
+
+    <script type="text/babel">
+        function App() {
+            const [products, setProducts] = React.useState([]);
+            const [selectedProduct, setSelectedProduct] = React.useState(null);
+            const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+            React.useEffect(() => {
+                // Data produk contoh, bisa diambil dari API
+                const dummyData = [
+                    {
+                        id: 1,
+                        nama: "Produk A",
+                        kategori: "Elektronik",
+                        harga: 250000,
+                        stok: 10,
+                        gambar: "https://via.placeholder.com/100",
+                        link_pembayaran: {
+                            dana: "https://dana.id/bayarA",
+                            gopay: "https://gopay.id/bayarA",
+                            ovo: "https://ovo.id/bayarA"
+                        }
+                    },
+                    {
+                        id: 2,
+                        nama: "Produk B",
+                        kategori: "Pakaian",
+                        harga: 100000,
+                        stok: 20,
+                        gambar: "https://via.placeholder.com/100",
+                        link_pembayaran: {
+                            dana: "https://dana.id/bayarB",
+                            gopay: "https://gopay.id/bayarB",
+                            ovo: "https://ovo.id/bayarB"
+                        }
+                    }
+                ];
+                setProducts(dummyData);
+            }, []);
+
+            function handleBuyClick(product) {
+                setSelectedProduct(product);
+                setIsModalOpen(true);
+            }
+
+            function handlePayment(method) {
+                if (selectedProduct) {
+                    window.location.href = selectedProduct.link_pembayaran[method];
+                }
+            }
+
+            return (
+                <div className="overflow-x-auto">
+                    <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
+                        <thead className="bg-blue-500 text-white">
+                            <tr>
+                                <th className="py-3 px-4 text-left">ID</th>
+                                <th className="py-3 px-4 text-left">Gambar</th>
+                                <th className="py-3 px-4 text-left">Nama Produk</th>
+                                <th className="py-3 px-4 text-left hidden md:table-cell">Kategori</th>
+                                <th className="py-3 px-4 text-left">Harga</th>
+                                <th className="py-3 px-4 text-left hidden md:table-cell">Stok</th>
+                                <th className="py-3 px-4 text-center">Beli</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                            {products.map(product => (
+                                <tr key={product.id} className="hover:bg-gray-100 transition">
+                                    <td className="py-3 px-4">{product.id}</td>
+                                    <td className="py-3 px-4">
+                                        <img src={product.gambar} alt={product.nama} className="w-14 h-14 object-cover rounded-lg shadow-md" />
+                                    </td>
+                                    <td className="py-3 px-4 font-semibold">{product.nama}</td>
+                                    <td className="py-3 px-4 hidden md:table-cell">{product.kategori}</td>
+                                    <td className="py-3 px-4 text-blue-500 font-semibold">Rp {product.harga.toLocaleString()}</td>
+                                    <td className="py-3 px-4 hidden md:table-cell">{product.stok}</td>
+                                    <td className="py-3 px-4 text-center">
+                                        <button 
+                                            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md transition"
+                                            onClick={() => handleBuyClick(product)}
+                                        >
+                                            Beli
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    {/* Modal Pilihan Pembayaran */}
+                    {isModalOpen && selectedProduct && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+                                <h2 className="text-xl font-bold mb-4">Pilih Metode Pembayaran</h2>
+                                <p className="mb-4 text-gray-700">Untuk: <strong>{selectedProduct.nama}</strong></p>
+
+                                <div className="flex gap-4 justify-center">
+                                    <button 
+                                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md"
+                                        onClick={() => handlePayment("dana")}
+                                    >
+                                        Dana
+                                    </button>
+                                    <button 
+                                        className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg shadow-md"
+                                        onClick={() => handlePayment("gopay")}
+                                    >
+                                        GoPay
+                                    </button>
+                                    <button 
+                                        className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg shadow-md"
+                                        onClick={() => handlePayment("ovo")}
+                                    >
+                                        OVO
+                                    </button>
+                                </div>
+
+                                <button 
+                                    className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md"
+                                    onClick={() => setIsModalOpen(false)}
+                                >
+                                    Batal
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+
+</body>
+</html>
